@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sales Insights - Sign Up</title>
+    <link rel="stylesheet" href="../static/styles.css" />
+  </head>
+  <body>
+    <div class="signup-container">
+      <h1>Sign Up</h1>
+      <form action="/signup" method="POST">
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username" required /><br /><br />
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required /><br /><br />
+        <label for="password">Password:</label>
+        <input
+          type="password"
+          id="password"
+          name="password"
+          required
+        /><br /><br />
+        <input type="submit" id="signup-btn" value="Sign Up" />
+      </form>
+      <p>Already have an account? <a class=".aa" href="/">Login here</a></p>
+    </div>
+    <script src="https://www.gstatic.com/firebasejs/8.1.1/firebase-app.js"></script>
+    <!-- Below is the additional script for Firebase Auth -->
+    <script src="https://www.gstatic.com/firebasejs/8.1.1/firebase-auth.js"></script>
+
+    <script>
+      var firebaseConfig = {
+        apiKey: "AIzaSyCMV1BfAWKCjwIGMbnZ0mvM_9EY3-Et8tI",
+        authDomain: "Sales-Insights.irebaseapp.com",
+        databaseURL: "https://Sales-Insights.firebaseio.com",
+        projectId: "sales-insights-14809",
+      };
+      firebase.initializeApp(firebaseConfig);
+
+      const auth = firebase.auth();
+      const signupBtn = document.querySelector("#signup-btn");
+      signupBtn.addEventListener("click", (e) => {
+        e.preventDefault();
+
+        const email = document.querySelector("#email").value;
+        const password = document.querySelector("#password").value;
+
+        auth
+          .createUserWithEmailAndPassword(email, password)
+          .then((cred) => {
+            alert("User signed up!");
+            window.location.href = '/';
+          })
+          .catch((error) => {
+            alert(error.message);
+          });
+      });
+    </script>
+  </body>
+</html>

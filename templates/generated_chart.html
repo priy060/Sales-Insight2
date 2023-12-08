@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="../static/dashboard.css" />
+    <link rel="stylesheet" href="../static/styles.css" />
+    <script src="../static/script.js"></script>
+    <title>Generated Chart</title>
+  </head>
+  <body>
+    <header>
+      <h1>SALES INSIGHT</h1>
+      <h3 id="welcomeMessage"></h3>
+      <span>
+        <h4>Voice Command</h4>
+        <div class="toggle-container voiceCommandButton" onClick="toggleVoiceCommand()" id="toggleContainer">
+          <div class="toggle-switch" id="toggleSwitch"></div>
+        </div>
+      </span>      
+      <span>
+        <a href="/logout_page">Log out</a>
+        <div class="profile-container">
+          <img
+            class="profile-image"
+            src="../static/profile_pictures/default-profile.jpg"
+            alt="Profile Picture"
+          />
+          <form
+            class="profile-form"
+            action="/upload_profile"
+            method="post"
+            enctype="multipart/form-data"
+          >
+            <input
+              class="profile-input"
+              type="file"
+              accept="image/*"
+              name="profile_picture"
+              id="profileInput"
+            />
+            <button type="submit">Upload Profile Picture</button>
+          </form>
+        </div>
+      </span>
+    </header>
+    <div class="sidebar">
+      <a href="/dashboard_page">Dashboard</a>
+      <a href="/upload_page">Upload File</a>
+      <a href="/feedback_page">Feedback</a>
+      <a href="/voice_command">Voice Command</a>
+      <a href="/history_page">History</a>
+      <a href="/setting_page">Setting</a>
+      <a href="/logout_page">Log out</a>
+    </div>
+    <div class="content a">
+      <h1>Generated Chart</h1>
+      <img src="data:image/png;base64,{{ plot_url }}" alt="Generated Chart" />
+    </div>
+
+    <script>
+      let recognition;
+      let speakingEnabled = false;
+    
+      function toggleVoiceCommand() {
+        if (!recognition) {
+          recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+          recognition.continuous = true;
+          recognition.interimResults = true;
+          recognition.onresult = handleSpeechResult;
+          recognition.start();
+    
+          document.getElementById("voiceCommandButton").textContent =
+            "Disable Voice Command";
+          speakingEnabled = true;
+    
+          // Add event listeners for various events
+          document.addEventListener("click", handleVoiceCommand);
+          document.addEventListener("keydown", handleVoiceCommand);
+          document.addEventListener("change", handleVoiceCommand);
+          document.addEventListener("submit", handleVoiceCommand);
+          document.addEventListener("mouseover", handleVoiceCommand);
+          document.addEventListener("select", handleVoiceCommand);
+    
+          // Add window focus/blur event listeners
+          window.addEventListener("focus", handleWindowFocus);
+          window.addEventListener("blur", handleWindowBlur);
+        } else {
+          recognition.stop();
+          recognition = null;
+    
+          document.getElementById("voiceCommandButton").textContent =
+            "Enable Voice Command";
+          speakingEnabled = false;
+    
+          // Remove event listeners
+          document.removeEventListener("click", handleVoiceCommand);
+          document.removeEventListener("keydown", handleVoiceCommand);
+          document.removeEventListener("change", handleVoiceCommand);
+          document.removeEventListener("submit", handleVoiceCommand);
+          document.removeEventListener("mouseover", handleVoiceCommand);
+          document.removeEventListener("select", handleVoiceCommand);
+    
+          // Remove window focus/blur event listeners
+          window.removeEventListener("focus", handleWindowFocus);
+          window.removeEventListener("blur", handleWindowBlur);
+        }
+      }
+    
+      function handleSpeechResult(event) {
+        const interimTranscript =
+          event.results[event.results.length - 1][0].transcript;
+        console.log("Interim Result:", interimTranscript);
+        if (speakingEnabled) {
+          speak(interimTranscript);
+        }
+      }
+    
+      function handleVoiceCommand(event) {
+        const element = document.elementFromPoint(event.clientX, event.clientY);
+      
+        // Check if the element is valid and has text content
+        if (element && (element.innerText || element.textContent)) {
+          const utteranceText = "Hovering over: " + (element.innerText || element.textContent);
+      
+          if (speakingEnabled) {
+            speak(utteranceText);
+          }
+        }
+      }
+      
+    
+      function handleWindowFocus() {
+        if (speakingEnabled) {
+          speak(
+            "Window focused. Current content: " +
+              document.activeElement.innerText
+          );
+        }
+      }
+    
+      function handleWindowBlur() {
+        if (speakingEnabled) {
+          speak("Window blurred.");
+        }
+      }
+    
+      function speak(text) {
+        const speechSynthesis = window.speechSynthesis;
+        const utterance = new SpeechSynthesisUtterance(text);
+        speechSynthesis.speak(utterance);
+      }
+    </script>
+  </body>
+</html>

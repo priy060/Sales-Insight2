@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sales Insights - Feedback</title>
+    <link rel="stylesheet" href="../static/dashboard.css" />
+    <link rel="stylesheet" href="../static/styles.css" />
+    <script src="../static/script.js"></script>
+  </head>
+  <body>
+    <header>
+      <h1>SALES INSIGHT</h1>
+      <h3 id="welcomeMessage"></h3>
+      <span>
+        <h4>Voice Command</h4>
+        <div class="toggle-container voiceCommandButton" id="toggleContainer">
+          <div class="toggle-switch" id="toggleSwitch"></div>
+        </div>
+      </span>      
+      <span>
+        <a href="/logout_page">Log out</a>
+        <div class="profile-container">
+          <img
+            class="profile-image"
+            src="{{ url_for('static', filename='profile_pictures/' + profile_picture) }}"
+            alt="Profile Picture"
+          />
+          <form
+            class="profile-form"
+            action="/upload_profile"
+            method="post"
+            enctype="multipart/form-data"
+          >
+            <input
+              class="profile-input"
+              type="file"
+              accept="image/*"
+              name="profile_picture"
+              id="profileInput"
+            />
+            <button type="submit">Upload Profile Picture</button>
+          </form>
+        </div>
+    </header>
+    <div class="sidebar">
+      <a href="/dashboard_page">Dashboard</a>
+      <a href="/upload_page">Upload File</a>
+      <a href="/feedback_page" style="background-color: #ffb000;">Feedback</a>
+      <a href="/voice_command">Voice Command</a>
+      <a href="/history_page">History</a>
+      <a href="/setting_page">Setting</a>
+      <a href="/logout_page">Log out</a>
+    </div>
+    <div class="content">
+        <div class="feedback-container">
+            <h1>Feedback</h1>
+            <form action="/submit_feedback" method="POST">
+              <label for="feedback">Your Feedback:</label><br />
+              <textarea
+                id="feedback"
+                name="feedback"
+                rows="4"
+                cols="50"
+                required
+              ></textarea
+              ><br /><br />
+              <input type="submit" value="Submit" />
+            </form>
+          </div>
+    </div>
+   
+  </body>
+</html>

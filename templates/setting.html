@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sales Insights</title>
+    <link rel="stylesheet" href="../static/dashboard.css" />
+    <link rel="stylesheet" href="../static/styles.css" />
+    <script src="../static/script.js"></script>
+  </head>
+  <body>
+    <header>
+      <h1>SALES INSIGHT</h1>
+      <h3 id="welcomeMessage"></h3>
+      <span>
+        <h4>Voice Command</h4>
+        <div class="toggle-container" id="toggleContainer">
+          <div class="toggle-switch" id="toggleSwitch"></div>
+        </div>
+      </span>
+      <span>
+        <a href="/logout_page">Log out</a>
+        <div class="profile-container">
+          <img
+            class="profile-image"
+            src="{{ url_for('static', filename='profile_pictures/' + profile_picture) }}"
+            alt="Profile Picture"
+          />
+          <form
+            class="profile-form"
+            action="/upload_profile"
+            method="post"
+            enctype="multipart/form-data"
+          >
+            <input
+              class="profile-input"
+              type="file"
+              accept="image/*"
+              name="profile_picture"
+              id="profileInput"
+            />
+            <button type="submit">Upload Profile Picture</button>
+          </form>
+        </div>
+      </span>
+    </header>
+    <div class="sidebar">
+      <a href="/dashboard_page">Dashboard</a>
+      <a href="/upload_page">Upload File</a>
+      <a href="/feedback_page">Feedback</a>
+      <a href="/voice_command">Voice Command</a>
+      <a href="/history_page">History</a>
+      <a href="#" style="background-color: #ffb000">Setting</a>
+      <a href="/logout_page">Log out</a>
+    </div>
+    <div class="content a">
+      <div class="content_2">
+        <div class="chart">
+          <h1>Settings</h1>
+
+          <div class="setting">
+            <label for="profilePic">Change Profile Picture:</label>
+            <input type="file" id="profilePic" />
+          </div>
+
+          <div class="setting">
+            <label for="username">Update Username:</label>
+            <input type="text" id="username" />
+          </div>
+
+          <div class="setting">
+            <label for="notifications">Enable Notifications:</label>
+            <input type="checkbox" id="notifications" />
+          </div>
+
+          <button id="saveSettings">Save Settings</button>
+          <div class="setting">
+            <label for="password">Change Password:</label>
+            <input type="password" id="password" />
+          </div>
+          <div class="setting">
+            <label for="language">Select Language:</label>
+            <select id="language">
+              <option value="en">English</option>
+              <option value="es">Spanish</option>
+              <option value="fr">French</option>
+            </select>
+          </div>
+          <div class="setting">
+            <label for="darkMode">Enable Dark Mode:</label>
+            <input type="checkbox" id="darkMode" />
+          </div>
+
+          <div class="setting">
+            <label for="notificationSound">Choose Notification Sound:</label>
+            <input type="file" id="notificationSound" accept=".mp3, .wav" />
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

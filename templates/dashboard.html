@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sales Insights - Dashboard</title>
+    <link rel="stylesheet" href="../static/dashboard.css" />
+    <link rel="stylesheet" href="../static/styles.css" />
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="../static/script.js"></script>
+    <style>
+      canvas {
+        max-width: 400px;
+        margin-bottom: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>SALES INSIGHT</h1>
+      <h3 id="welcomeMessage"></h3>
+      <span>
+        <h4>Voice Command</h4>
+        <div class="toggle-container voiceCommandButton" id="toggleContainer">
+          <div class="toggle-switch" id="toggleSwitch"></div>
+        </div>
+      </span>
+      <span>
+        <a href="/logout_page">Log out</a>
+        <div class="profile-container">
+          <img
+            class="profile-image"
+            src="{{ url_for('static', filename='profile_pictures/' + (profile_image or 'default-profile.jpg')) }}"
+            alt="Profile Picture"
+          />
+          <form
+            class="profile-form"
+            action="/upload_profile"
+            method="post"
+            enctype="multipart/form-data"
+          >
+            <input
+              class="profile-input"
+              type="file"
+              accept="image/*"
+              name="profile_picture"
+              id="profileInput"
+            />
+            <button type="submit">Upload Profile Picture</button>
+          </form>
+        </div>
+      </span>
+    </header>
+    <div class="sidebar">
+      <a href="/dashboard_page" style="background-color: #ffb000">Dashboard</a>
+      <a href="/upload_page">Upload File</a>
+      <a href="/feedback_page">Feedback</a>
+      <a href="/voice_command">Voice Command</a>
+      <a href="/history_page">History</a>
+      <a href="/setting_page">Setting</a>
+      <a href="/logout_page">Log out</a>
+    </div>
+    <div class="content">
+      <div class="dashboard-container">
+        <h1>Dashboard</h1>
+      </div>
+      <div class="content_2">
+        <div class="chart">
+          <h2>Pie Chart</h2>
+          <canvas id="pieChart"></canvas>
+        </div>
+        <div class="chart">
+          <h2>Bar Graph</h2>
+          <canvas id="barGraph"></canvas>
+        </div>
+        <div class="chart">
+          <h2>Line Chart</h2>
+          <canvas id="lineChart"></canvas>
+        </div>
+        <div class="chart">
+          <h2>Bubble Chart</h2>
+          <canvas id="bubbleChart"></canvas>
+        </div>
+        <div class="chart">
+          <h2>Scatter Plot</h2>
+          <canvas id="scatterPlot"></canvas>
+        </div>
+        <div class="chart">
+          <h2>Stacked Bar Chart</h2>
+          <canvas id="stackedBarChart"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      new Chart(document.getElementById("pieChart"), {
+        type: "pie",
+        data: {
+          labels: ["Red", "Blue", "Yellow"],
+          datasets: [
+            {
+              data: [10, 20, 30],
+              backgroundColor: ["#FF6384", "#36A2EB", "#FFCE56"],
+            },
+          ],
+        },
+        options: {
+          responsive: true,
+        },
+      });
+
+      // Bar Graph
+      new Chart(document.getElementById("barGraph"), {
+        type: "bar",
+        data: {
+          labels: ["Red", "Blue", "Yellow"],
+          datasets: [
+            {
+              label: "Value",
+              data: [10, 20, 30],
+              backgroundColor: ["#FF6384", "#36A2EB", "#FFCE56"],
+            },
+          ],
+        },
+        options: {
+          responsive: true,
+        },
+      });
+
+      // Line Chart
+      new Chart(document.getElementById("lineChart"), {
+        type: "line",
+        data: {
+          labels: [
+            "January",
+            "February",
+            "March",
+            "April",
+            "May",
+            "June",
+            "July",
+          ],
+          datasets: [
+            {
+              label: "Value",
+              data: [10, 20, 30, 40, 50, 60, 70],
+              borderColor: "#36A2EB",
+              fill: false,
+            },
+          ],
+        },
+        options: {
+          responsive: true,
+        },
+      });
+
+      // Bubble Chart
+      new Chart(document.getElementById("bubbleChart"), {
+        type: "bubble",
+        data: {
+          datasets: [
+            {
+              label: "Bubble Chart",
+              data: [
+                {
+                  x: 10,
+                  y: 20,
+                  r: 5,
+                },
+                {
+                  x: 30,
+                  y: 40,
+                  r: 10,
+                },
+                {
+                  x: 50,
+                  y: 60,
+                  r: 15,
+                },
+              ],
+              backgroundColor: "#FFCE56",
+            },
+          ],
+        },
+        options: {
+          responsive: true,
+        },
+      });
+
+      // Scatter Plot
+      new Chart(document.getElementById("scatterPlot"), {
+        type: "scatter",
+        data: {
+          datasets: [
+            {
+              label: "Scatter Plot",
+              data: [
+                {
+                  x: 10,
+                  y: 20,
+                },
+                {
+                  x: 30,
+                  y: 40,
+                },
+                {
+                  x: 50,
+                  y: 60,
+                },
+              ],
+              backgroundColor: "#36A2EB",
+            },
+          ],
+        },
+        options: {
+          responsive: true,
+        },
+      });
+
+      // Stacked Bar Chart
+      new Chart(document.getElementById("stackedBarChart"), {
+        type: "bar",
+        data: {
+          labels: ["A", "B", "C"],
+          datasets: [
+            {
+              label: "Value 1",
+              data: [10, 20, 30],
+              backgroundColor: "#FF6384",
+            },
+            {
+              label: "Value 2",
+              data: [15, 25, 35],
+              backgroundColor: "#36A2EB",
+            },
+          ],
+        },
+        options: {
+          responsive: true,
+          scales: {
+            x: { stacked: true },
+            y: { stacked: true },
+          },
+        },
+      });
+    </script>
+  </body>
+</html>

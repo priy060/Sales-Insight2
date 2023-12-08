@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="../static/dashboard.css" />
+    <link rel="stylesheet" href="../static/styles.css" />
+    <script src="../static/script.js"></script>
+    <title>Display Excel Data</title>
+    <style>
+      .data {
+        border-collapse: collapse;
+        width: 100%;
+      }
+
+      .data th,
+      .data td {
+        border: 1px solid black;
+        padding: 8px;
+        text-align: left;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>SALES INSIGHT</h1>
+      <h3 id="welcomeMessage"></h3>
+      <span>
+        <h4>Voice Command</h4>
+        <div class="toggle-container voiceCommandButton" id="toggleContainer">
+          <div class="toggle-switch" id="toggleSwitch"></div>
+        </div>
+      </span>      
+      <span>
+        <a href="/logout_page">Log out</a>
+        <div class="profile-container">
+          <img
+            class="profile-image"
+            src="{{ url_for('static', filename='profile_pictures/' + profile_picture) }}"
+            alt="Profile Picture"
+          />
+          <form
+            class="profile-form"
+            action="/upload_profile"
+            method="post"
+            enctype="multipart/form-data"
+          >
+            <input
+              class="profile-input"
+              type="file"
+              accept="image/*"
+              name="profile_picture"
+              id="profileInput"
+            />
+            <button type="submit">Upload Profile Picture</button>
+          </form>
+        </div>
+      </span>
+    </header>
+    <div class="sidebar">
+      <a href="/dashboard_page">Dashboard</a>
+      <a href="/upload_page">Upload File</a>
+      <a href="/feedback_page">Feedback</a>
+      <a href="/voice_command">Voice Command</a>
+      <a href="/history_page">History</a>
+      <a href="/setting_page">Setting</a>
+      <a href="/logout_page">Log out</a>
+    </div>
+    <div class="content a">
+      <h1>Select Chart Type</h1>
+      <form method="post" action="/generate_chart" id="generateChartForm">
+        <label for="chart_type">Chart Type:</label>
+        <select name="chart_type" required>
+          <option value="pie">Pie Chart</option>
+          <option value="bar">Bar Graph</option>
+          <option value="line">Line Chart</option>
+          <option value="bubble">Bubble Chart</option>
+          <option value="scatter">Scatter Plot</option>
+          <option value="stacked_bar">Stacked Bar Chart</option>
+        </select>
+        <br />
+        <label for="x_axis">X-axis:</label>
+        <input type="text" name="x_axis" required />
+        <br />
+        <label for="y_axis">Y-axis:</label>
+        <input type="text" name="y_axis" required />
+        <br />
+        <label for="size_column">Size Column (for Bubble Chart):</label>
+        <input type="text" name="size_column" />
+        <br />
+        <button type="submit" id="generateChartButton">Generate Chart</button>
+      </form>
+      {% if error %}
+      <p style="color: red">{{ error }}</p>
+      {% endif %}
+      <h1>Excel Data</h1>
+      <div>{% for table in tables %} {{ table|safe }} {% endfor %}</div>
+    </div>
+    <script>
+      document.addEventListener('DOMContentLoaded', function () {
+        const generateChartForm = document.getElementById('generateChartForm');
+        const generateChartButton = document.getElementById('generateChartButton');
+    
+        generateChartButton.addEventListener('click', function () {
+            // Serialize form data to send to the server
+            const formData = new FormData(generateChartForm);
+    
+            // Use AJAX to submit the form data
+            fetch('/generate_chart', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Check if the server response indicates success
+                if (data.success) {
+                    // Redirect to the chart history page after successful chart generation
+                    window.location.href = '/chart_history';
+                } else {
+                    // Handle errors or display messages to the user
+                    console.error('Chart generation failed:', data.error);
+                }
+            })
+            .catch(error => console.error('Error submitting form:', error));
+        });
+    });    
+    </script>
+  </body>
+</html>

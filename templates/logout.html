@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sales Insights</title>
+    <link rel="stylesheet" href="../static/dashboard.css" />
+    <link rel="stylesheet" href="../static/styles.css" />
+    <script src="../static/script.js"></script>
+  </head>
+  <body>
+    <header>
+      <h1>SALES INSIGHT</h1>
+      <h3 id="welcomeMessage"></h3>
+      <span>
+        <h4>Voice Command</h4>
+        <div class="toggle-container" id="toggleContainer">
+          <div class="toggle-switch" id="toggleSwitch"></div>
+        </div>
+      </span>
+      <span>
+        <a href="/logout_page">Log out</a>
+        <div class="profile-container">
+          <img
+            class="profile-image"
+            src="{{ url_for('static', filename='profile_pictures/' + profile_picture) }}"
+            alt="Profile Picture"
+          />
+          <form
+            class="profile-form"
+            action="/upload_profile"
+            method="post"
+            enctype="multipart/form-data"
+          >
+            <input
+              class="profile-input"
+              type="file"
+              accept="image/*"
+              name="profile_picture"
+              id="profileInput"
+            />
+            <button type="submit">Upload Profile Picture</button>
+          </form>
+        </div>
+      </span>
+    </header>
+    <div class="sidebar">
+      <a href="/dashboard_page">Dashboard</a>
+      <a href="/upload_page">Upload File</a>
+      <a href="/feedback_page">Feedback</a>
+      <a href="/voice_command">Voice Command</a>
+      <a href="/history_page">History</a>
+      <a href="/setting_page">Setting</a>
+      <a href="#" style="background-color: #ffb000">Log out</a>
+    </div>
+    <div class="content">
+      <div class="logout-container">
+        <h2>Do you want to log out ?</h2>
+        <span>
+          <a href="/dashboard_page">No</a>
+          <a href="/" id="logout-btn">Yes</a>
+        </span>
+      </div>
+    </div>
+    <script src="https://www.gstatic.com/firebasejs/8.1.1/firebase-app.js"></script>
+    <!-- Below is the additional script for Firebase Auth -->
+    <script src="https://www.gstatic.com/firebasejs/8.1.1/firebase-auth.js"></script>
+
+    <script>
+      var firebaseConfig = {
+        apiKey: "AIzaSyCMV1BfAWKCjwIGMbnZ0mvM_9EY3-Et8tI",
+        authDomain: "Sales-Insights.irebaseapp.com",
+        databaseURL: "https://Sales-Insights.firebaseio.com",
+        projectId: "sales-insights-14809"
+      };
+      firebase.initializeApp(firebaseConfig);
+
+      const auth = firebase.auth();
+      const logoutBtn = document.querySelector("#logout-btn");
+      logoutBtn.addEventListener("click", (e) => {
+        e.preventDefault();
+        auth.signOut();
+        alert("User signed out!");
+        window.location.href = '/';
+      });
+    </script>
+
+    <script>
+      const toggleContainer = document.getElementById("toggleContainer");
+      const toggleSwitch = document.getElementById("toggleSwitch");
+
+      toggleContainer.addEventListener("click", () => {
+        toggleContainer.classList.toggle("active");
+        toggleSwitch.classList.toggle("active");
+      });
+
+      function changeProfilePicture(event) {
+        const file = event.target.files[0];
+        const reader = new FileReader();
+
+        reader.onload = function () {
+          const profileImage = document.querySelector(".profile-image");
+          profileImage.src = reader.result;
+        };
+
+        if (file) {
+          reader.readAsDataURL(file);
+        }
+      }
+    </script>
+  </body>
+</html>
