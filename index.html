@@ -1,0 +1,1259 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sales Insights - Dashboard</title>
+    <link rel="stylesheet" href="../static/dashboard.css" />
+    <link rel="stylesheet" href="../static/styles.css" />
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="../static/script.js"></script>
+    <style>
+      canvas {
+        max-width: 400px;
+        margin-bottom: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>SALES INSIGHT</h1>
+      <h3 id="welcomeMessage"></h3>
+      <span>
+        <h4>Voice Command</h4>
+        <div class="toggle-container voiceCommandButton" id="toggleContainer">
+          <div class="toggle-switch" id="toggleSwitch"></div>
+        </div>
+      </span>
+      <span>
+        <a href="/logout_page">Log out</a>
+        <div class="profile-container">
+          <img
+            class="profile-image"
+            src="{{ url_for('static', filename='profile_pictures/' + (profile_image or 'default-profile.jpg')) }}"
+            alt="Profile Picture"
+          />
+          <form
+            class="profile-form"
+            action="/upload_profile"
+            method="post"
+            enctype="multipart/form-data"
+          >
+            <input
+              class="profile-input"
+              type="file"
+              accept="image/*"
+              name="profile_picture"
+              id="profileInput"
+            />
+            <button type="submit">Upload Profile Picture</button>
+          </form>
+        </div>
+      </span>
+    </header>
+    <div class="sidebar">
+      <a href="/dashboard_page" style="background-color: #ffb000">Dashboard</a>
+      <a href="/upload_page">Upload File</a>
+      <a href="/feedback_page">Feedback</a>
+      <a href="/voice_command">Voice Command</a>
+      <a href="/history_page">History</a>
+      <a href="/setting_page">Setting</a>
+      <a href="/logout_page">Log out</a>
+    </div>
+    <div class="content">
+      <div class="dashboard-container">
+        <h1>Dashboard</h1>
+      </div>
+      <div class="content_2">
+        <div class="chart">
+          <h2>Pie Chart</h2>
+          <canvas id="pieChart"></canvas>
+        </div>
+        <div class="chart">
+          <h2>Bar Graph</h2>
+          <canvas id="barGraph"></canvas>
+        </div>
+        <div class="chart">
+          <h2>Line Chart</h2>
+          <canvas id="lineChart"></canvas>
+        </div>
+        <div class="chart">
+          <h2>Bubble Chart</h2>
+          <canvas id="bubbleChart"></canvas>
+        </div>
+        <div class="chart">
+          <h2>Scatter Plot</h2>
+          <canvas id="scatterPlot"></canvas>
+        </div>
+        <div class="chart">
+          <h2>Stacked Bar Chart</h2>
+          <canvas id="stackedBarChart"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      new Chart(document.getElementById("pieChart"), {
+        type: "pie",
+        data: {
+          labels: ["Red", "Blue", "Yellow"],
+          datasets: [
+            {
+              data: [10, 20, 30],
+              backgroundColor: ["#FF6384", "#36A2EB", "#FFCE56"],
+            },
+          ],
+        },
+        options: {
+          responsive: true,
+        },
+      });
+
+      // Bar Graph
+      new Chart(document.getElementById("barGraph"), {
+        type: "bar",
+        data: {
+          labels: ["Red", "Blue", "Yellow"],
+          datasets: [
+            {
+              label: "Value",
+              data: [10, 20, 30],
+              backgroundColor: ["#FF6384", "#36A2EB", "#FFCE56"],
+            },
+          ],
+        },
+        options: {
+          responsive: true,
+        },
+      });
+
+      // Line Chart
+      new Chart(document.getElementById("lineChart"), {
+        type: "line",
+        data: {
+          labels: [
+            "January",
+            "February",
+            "March",
+            "April",
+            "May",
+            "June",
+            "July",
+          ],
+          datasets: [
+            {
+              label: "Value",
+              data: [10, 20, 30, 40, 50, 60, 70],
+              borderColor: "#36A2EB",
+              fill: false,
+            },
+          ],
+        },
+        options: {
+          responsive: true,
+        },
+      });
+
+      // Bubble Chart
+      new Chart(document.getElementById("bubbleChart"), {
+        type: "bubble",
+        data: {
+          datasets: [
+            {
+              label: "Bubble Chart",
+              data: [
+                {
+                  x: 10,
+                  y: 20,
+                  r: 5,
+                },
+                {
+                  x: 30,
+                  y: 40,
+                  r: 10,
+                },
+                {
+                  x: 50,
+                  y: 60,
+                  r: 15,
+                },
+              ],
+              backgroundColor: "#FFCE56",
+            },
+          ],
+        },
+        options: {
+          responsive: true,
+        },
+      });
+
+      // Scatter Plot
+      new Chart(document.getElementById("scatterPlot"), {
+        type: "scatter",
+        data: {
+          datasets: [
+            {
+              label: "Scatter Plot",
+              data: [
+                {
+                  x: 10,
+                  y: 20,
+                },
+                {
+                  x: 30,
+                  y: 40,
+                },
+                {
+                  x: 50,
+                  y: 60,
+                },
+              ],
+              backgroundColor: "#36A2EB",
+            },
+          ],
+        },
+        options: {
+          responsive: true,
+        },
+      });
+
+      // Stacked Bar Chart
+      new Chart(document.getElementById("stackedBarChart"), {
+        type: "bar",
+        data: {
+          labels: ["A", "B", "C"],
+          datasets: [
+            {
+              label: "Value 1",
+              data: [10, 20, 30],
+              backgroundColor: "#FF6384",
+            },
+            {
+              label: "Value 2",
+              data: [15, 25, 35],
+              backgroundColor: "#36A2EB",
+            },
+          ],
+        },
+        options: {
+          responsive: true,
+          scales: {
+            x: { stacked: true },
+            y: { stacked: true },
+          },
+        },
+      });
+    </script>
+  </body>
+</html>
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="../static/dashboard.css" />
+    <link rel="stylesheet" href="../static/styles.css" />
+    <script src="../static/script.js"></script>
+    <title>Display Excel Data</title>
+    <style>
+      .data {
+        border-collapse: collapse;
+        width: 100%;
+      }
+
+      .data th,
+      .data td {
+        border: 1px solid black;
+        padding: 8px;
+        text-align: left;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>SALES INSIGHT</h1>
+      <h3 id="welcomeMessage"></h3>
+      <span>
+        <h4>Voice Command</h4>
+        <div class="toggle-container voiceCommandButton" id="toggleContainer">
+          <div class="toggle-switch" id="toggleSwitch"></div>
+        </div>
+      </span>      
+      <span>
+        <a href="/logout_page">Log out</a>
+        <div class="profile-container">
+          <img
+            class="profile-image"
+            src="{{ url_for('static', filename='profile_pictures/' + profile_picture) }}"
+            alt="Profile Picture"
+          />
+          <form
+            class="profile-form"
+            action="/upload_profile"
+            method="post"
+            enctype="multipart/form-data"
+          >
+            <input
+              class="profile-input"
+              type="file"
+              accept="image/*"
+              name="profile_picture"
+              id="profileInput"
+            />
+            <button type="submit">Upload Profile Picture</button>
+          </form>
+        </div>
+      </span>
+    </header>
+    <div class="sidebar">
+      <a href="/dashboard_page">Dashboard</a>
+      <a href="/upload_page">Upload File</a>
+      <a href="/feedback_page">Feedback</a>
+      <a href="/voice_command">Voice Command</a>
+      <a href="/history_page">History</a>
+      <a href="/setting_page">Setting</a>
+      <a href="/logout_page">Log out</a>
+    </div>
+    <div class="content a">
+      <h1>Select Chart Type</h1>
+      <form method="post" action="/generate_chart" id="generateChartForm">
+        <label for="chart_type">Chart Type:</label>
+        <select name="chart_type" required>
+          <option value="pie">Pie Chart</option>
+          <option value="bar">Bar Graph</option>
+          <option value="line">Line Chart</option>
+          <option value="bubble">Bubble Chart</option>
+          <option value="scatter">Scatter Plot</option>
+          <option value="stacked_bar">Stacked Bar Chart</option>
+        </select>
+        <br />
+        <label for="x_axis">X-axis:</label>
+        <input type="text" name="x_axis" required />
+        <br />
+        <label for="y_axis">Y-axis:</label>
+        <input type="text" name="y_axis" required />
+        <br />
+        <label for="size_column">Size Column (for Bubble Chart):</label>
+        <input type="text" name="size_column" />
+        <br />
+        <button type="submit" id="generateChartButton">Generate Chart</button>
+      </form>
+      {% if error %}
+      <p style="color: red">{{ error }}</p>
+      {% endif %}
+      <h1>Excel Data</h1>
+      <div>{% for table in tables %} {{ table|safe }} {% endfor %}</div>
+    </div>
+    <script>
+      document.addEventListener('DOMContentLoaded', function () {
+        const generateChartForm = document.getElementById('generateChartForm');
+        const generateChartButton = document.getElementById('generateChartButton');
+    
+        generateChartButton.addEventListener('click', function () {
+            // Serialize form data to send to the server
+            const formData = new FormData(generateChartForm);
+    
+            // Use AJAX to submit the form data
+            fetch('/generate_chart', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Check if the server response indicates success
+                if (data.success) {
+                    // Redirect to the chart history page after successful chart generation
+                    window.location.href = '/chart_history';
+                } else {
+                    // Handle errors or display messages to the user
+                    console.error('Chart generation failed:', data.error);
+                }
+            })
+            .catch(error => console.error('Error submitting form:', error));
+        });
+    });    
+    </script>
+  </body>
+</html>
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sales Insights - Feedback</title>
+    <link rel="stylesheet" href="../static/dashboard.css" />
+    <link rel="stylesheet" href="../static/styles.css" />
+    <script src="../static/script.js"></script>
+  </head>
+  <body>
+    <header>
+      <h1>SALES INSIGHT</h1>
+      <h3 id="welcomeMessage"></h3>
+      <span>
+        <h4>Voice Command</h4>
+        <div class="toggle-container voiceCommandButton" id="toggleContainer">
+          <div class="toggle-switch" id="toggleSwitch"></div>
+        </div>
+      </span>      
+      <span>
+        <a href="/logout_page">Log out</a>
+        <div class="profile-container">
+          <img
+            class="profile-image"
+            src="{{ url_for('static', filename='profile_pictures/' + profile_picture) }}"
+            alt="Profile Picture"
+          />
+          <form
+            class="profile-form"
+            action="/upload_profile"
+            method="post"
+            enctype="multipart/form-data"
+          >
+            <input
+              class="profile-input"
+              type="file"
+              accept="image/*"
+              name="profile_picture"
+              id="profileInput"
+            />
+            <button type="submit">Upload Profile Picture</button>
+          </form>
+        </div>
+    </header>
+    <div class="sidebar">
+      <a href="/dashboard_page">Dashboard</a>
+      <a href="/upload_page">Upload File</a>
+      <a href="/feedback_page" style="background-color: #ffb000;">Feedback</a>
+      <a href="/voice_command">Voice Command</a>
+      <a href="/history_page">History</a>
+      <a href="/setting_page">Setting</a>
+      <a href="/logout_page">Log out</a>
+    </div>
+    <div class="content">
+        <div class="feedback-container">
+            <h1>Feedback</h1>
+            <form action="/submit_feedback" method="POST">
+              <label for="feedback">Your Feedback:</label><br />
+              <textarea
+                id="feedback"
+                name="feedback"
+                rows="4"
+                cols="50"
+                required
+              ></textarea
+              ><br /><br />
+              <input type="submit" value="Submit" />
+            </form>
+          </div>
+    </div>
+   
+  </body>
+</html>
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="../static/dashboard.css" />
+    <link rel="stylesheet" href="../static/styles.css" />
+    <script src="../static/script.js"></script>
+    <title>Generated Chart</title>
+  </head>
+  <body>
+    <header>
+      <h1>SALES INSIGHT</h1>
+      <h3 id="welcomeMessage"></h3>
+      <span>
+        <h4>Voice Command</h4>
+        <div class="toggle-container voiceCommandButton" onClick="toggleVoiceCommand()" id="toggleContainer">
+          <div class="toggle-switch" id="toggleSwitch"></div>
+        </div>
+      </span>      
+      <span>
+        <a href="/logout_page">Log out</a>
+        <div class="profile-container">
+          <img
+            class="profile-image"
+            src="../static/profile_pictures/default-profile.jpg"
+            alt="Profile Picture"
+          />
+          <form
+            class="profile-form"
+            action="/upload_profile"
+            method="post"
+            enctype="multipart/form-data"
+          >
+            <input
+              class="profile-input"
+              type="file"
+              accept="image/*"
+              name="profile_picture"
+              id="profileInput"
+            />
+            <button type="submit">Upload Profile Picture</button>
+          </form>
+        </div>
+      </span>
+    </header>
+    <div class="sidebar">
+      <a href="/dashboard_page">Dashboard</a>
+      <a href="/upload_page">Upload File</a>
+      <a href="/feedback_page">Feedback</a>
+      <a href="/voice_command">Voice Command</a>
+      <a href="/history_page">History</a>
+      <a href="/setting_page">Setting</a>
+      <a href="/logout_page">Log out</a>
+    </div>
+    <div class="content a">
+      <h1>Generated Chart</h1>
+      <img src="data:image/png;base64,{{ plot_url }}" alt="Generated Chart" />
+    </div>
+
+    <script>
+      let recognition;
+      let speakingEnabled = false;
+    
+      function toggleVoiceCommand() {
+        if (!recognition) {
+          recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+          recognition.continuous = true;
+          recognition.interimResults = true;
+          recognition.onresult = handleSpeechResult;
+          recognition.start();
+    
+          document.getElementById("voiceCommandButton").textContent =
+            "Disable Voice Command";
+          speakingEnabled = true;
+    
+          // Add event listeners for various events
+          document.addEventListener("click", handleVoiceCommand);
+          document.addEventListener("keydown", handleVoiceCommand);
+          document.addEventListener("change", handleVoiceCommand);
+          document.addEventListener("submit", handleVoiceCommand);
+          document.addEventListener("mouseover", handleVoiceCommand);
+          document.addEventListener("select", handleVoiceCommand);
+    
+          // Add window focus/blur event listeners
+          window.addEventListener("focus", handleWindowFocus);
+          window.addEventListener("blur", handleWindowBlur);
+        } else {
+          recognition.stop();
+          recognition = null;
+    
+          document.getElementById("voiceCommandButton").textContent =
+            "Enable Voice Command";
+          speakingEnabled = false;
+    
+          // Remove event listeners
+          document.removeEventListener("click", handleVoiceCommand);
+          document.removeEventListener("keydown", handleVoiceCommand);
+          document.removeEventListener("change", handleVoiceCommand);
+          document.removeEventListener("submit", handleVoiceCommand);
+          document.removeEventListener("mouseover", handleVoiceCommand);
+          document.removeEventListener("select", handleVoiceCommand);
+    
+          // Remove window focus/blur event listeners
+          window.removeEventListener("focus", handleWindowFocus);
+          window.removeEventListener("blur", handleWindowBlur);
+        }
+      }
+    
+      function handleSpeechResult(event) {
+        const interimTranscript =
+          event.results[event.results.length - 1][0].transcript;
+        console.log("Interim Result:", interimTranscript);
+        if (speakingEnabled) {
+          speak(interimTranscript);
+        }
+      }
+    
+      function handleVoiceCommand(event) {
+        const element = document.elementFromPoint(event.clientX, event.clientY);
+      
+        // Check if the element is valid and has text content
+        if (element && (element.innerText || element.textContent)) {
+          const utteranceText = "Hovering over: " + (element.innerText || element.textContent);
+      
+          if (speakingEnabled) {
+            speak(utteranceText);
+          }
+        }
+      }
+      
+    
+      function handleWindowFocus() {
+        if (speakingEnabled) {
+          speak(
+            "Window focused. Current content: " +
+              document.activeElement.innerText
+          );
+        }
+      }
+    
+      function handleWindowBlur() {
+        if (speakingEnabled) {
+          speak("Window blurred.");
+        }
+      }
+    
+      function speak(text) {
+        const speechSynthesis = window.speechSynthesis;
+        const utterance = new SpeechSynthesisUtterance(text);
+        speechSynthesis.speak(utterance);
+      }
+    </script>
+  </body>
+</html>
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sales Insights</title>
+    <link rel="stylesheet" href="../static/dashboard.css" />
+    <link rel="stylesheet" href="../static/styles.css" />
+    <script src="../static/script.js"></script>
+  </head>
+  <body>
+    <header>
+      <h1>SALES INSIGHT</h1>
+      <h3 id="welcomeMessage"></h3>
+      <span>
+        <h4>Voice Command</h4>
+        <div class="toggle-container voiceCommandButton" id="toggleContainer">
+          <div class="toggle-switch" id="toggleSwitch"></div>
+        </div>
+      </span>      
+      <span>
+        <a href="/logout_page">Log out</a>
+        <div class="profile-container">
+          <img
+            class="profile-image"
+            src="{{ url_for('static', filename='profile_pictures/' + profile_picture) }}"
+            alt="Profile Picture"
+          />
+          <form
+            class="profile-form"
+            action="/upload_profile"
+            method="post"
+            enctype="multipart/form-data"
+          >
+            <input
+              class="profile-input"
+              type="file"
+              accept="image/*"
+              name="profile_picture"
+              id="profileInput"
+            />
+            <button type="submit">Upload Profile Picture</button>
+          </form>
+        </div>
+      </span>
+    </header>
+    <div class="sidebar">
+      <a href="/dashboard_page">Dashboard</a>
+      <a href="/upload_page">Upload File</a>
+      <a href="/feedback_page">Feedback</a>
+      <a href="/voice_command">Voice Command</a>
+      <a href="#" style="background-color: #ffb000">History</a>
+      <a href="/setting_page">Setting</a>
+      <a href="/logout_page">Log out</a>
+    </div>
+    <div class="content" style="padding-top: 120px">
+      <div class="content_2">
+        <h1>Chart History</h1>
+        <ul id="chartList" class="chart"></ul>
+      </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script src="../static/chart_history.js"></script>
+    <script>
+
+      function deleteBox(boxId) {
+        const box = document.getElementById(boxId);
+        box.parentNode.removeChild(box);
+      }
+
+      function updateBox(boxId) {
+        const box = document.getElementById(boxId);
+        const newLabel = prompt("Enter new label for the box:");
+        if (newLabel !== null && newLabel !== "") {
+          box.querySelector(".box-label").textContent = newLabel;
+        }
+      }
+    </script>
+  </body>
+</html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sales Insights - Login</title>
+    <link rel="stylesheet" href="../static/styles.css">
+</head>
+<body>
+    <div class="login-container">
+        <h1>Login</h1>
+        <form action="/login" method="POST">
+            <label for="email">UserEmail:</label>
+            <input type="email" id="email" name="username" required><br><br>
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" required><br><br>
+            <input type="submit" id="login-btn" value="Login">
+        </form>
+        <p>Don't have an account? <a class=".aa" href="/signup">Sign up here</a></p>
+    </div>
+    <script src="https://www.gstatic.com/firebasejs/8.1.1/firebase-app.js"></script>
+    <!-- Below is the additional script for Firebase Auth -->
+    <script src="https://www.gstatic.com/firebasejs/8.1.1/firebase-auth.js"></script>
+
+    <script>
+      var firebaseConfig = {
+        apiKey: "AIzaSyCMV1BfAWKCjwIGMbnZ0mvM_9EY3-Et8tI",
+        authDomain: "Sales-Insights.irebaseapp.com",
+        databaseURL: "https://Sales-Insights.firebaseio.com",
+        projectId: "sales-insights-14809"
+      };
+      firebase.initializeApp(firebaseConfig);
+    
+      const auth = firebase.auth();
+      const loginBtn = document.querySelector('#login-btn');
+    
+      loginBtn.addEventListener('click', e => {
+        e.preventDefault();
+    
+        const email = document.querySelector('#email').value;
+        const password = document.querySelector('#password').value;
+    
+        auth.signInWithEmailAndPassword(email, password)
+          .then(cred => {
+            alert('Logged in user!');
+            
+            // Extract the name from the email (before '@' symbol)
+            const name = email.split('@')[0];
+    
+            // Save the name in local storage
+            localStorage.setItem('userName', name);
+    
+            // Redirect to the dashboard page
+            window.location.href = '/dashboard_page';
+          })
+          .catch(error => {
+            alert(error.message);
+          });
+      });
+    </script>    
+</body>
+</html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sales Insights</title>
+    <link rel="stylesheet" href="../static/dashboard.css" />
+    <link rel="stylesheet" href="../static/styles.css" />
+    <script src="../static/script.js"></script>
+  </head>
+  <body>
+    <header>
+      <h1>SALES INSIGHT</h1>
+      <h3 id="welcomeMessage"></h3>
+      <span>
+        <h4>Voice Command</h4>
+        <div class="toggle-container" id="toggleContainer">
+          <div class="toggle-switch" id="toggleSwitch"></div>
+        </div>
+      </span>
+      <span>
+        <a href="/logout_page">Log out</a>
+        <div class="profile-container">
+          <img
+            class="profile-image"
+            src="{{ url_for('static', filename='profile_pictures/' + profile_picture) }}"
+            alt="Profile Picture"
+          />
+          <form
+            class="profile-form"
+            action="/upload_profile"
+            method="post"
+            enctype="multipart/form-data"
+          >
+            <input
+              class="profile-input"
+              type="file"
+              accept="image/*"
+              name="profile_picture"
+              id="profileInput"
+            />
+            <button type="submit">Upload Profile Picture</button>
+          </form>
+        </div>
+      </span>
+    </header>
+    <div class="sidebar">
+      <a href="/dashboard_page">Dashboard</a>
+      <a href="/upload_page">Upload File</a>
+      <a href="/feedback_page">Feedback</a>
+      <a href="/voice_command">Voice Command</a>
+      <a href="/history_page">History</a>
+      <a href="/setting_page">Setting</a>
+      <a href="#" style="background-color: #ffb000">Log out</a>
+    </div>
+    <div class="content">
+      <div class="logout-container">
+        <h2>Do you want to log out ?</h2>
+        <span>
+          <a href="/dashboard_page">No</a>
+          <a href="/" id="logout-btn">Yes</a>
+        </span>
+      </div>
+    </div>
+    <script src="https://www.gstatic.com/firebasejs/8.1.1/firebase-app.js"></script>
+    <!-- Below is the additional script for Firebase Auth -->
+    <script src="https://www.gstatic.com/firebasejs/8.1.1/firebase-auth.js"></script>
+
+    <script>
+      var firebaseConfig = {
+        apiKey: "AIzaSyCMV1BfAWKCjwIGMbnZ0mvM_9EY3-Et8tI",
+        authDomain: "Sales-Insights.irebaseapp.com",
+        databaseURL: "https://Sales-Insights.firebaseio.com",
+        projectId: "sales-insights-14809"
+      };
+      firebase.initializeApp(firebaseConfig);
+
+      const auth = firebase.auth();
+      const logoutBtn = document.querySelector("#logout-btn");
+      logoutBtn.addEventListener("click", (e) => {
+        e.preventDefault();
+        auth.signOut();
+        alert("User signed out!");
+        window.location.href = '/';
+      });
+    </script>
+
+    <script>
+      const toggleContainer = document.getElementById("toggleContainer");
+      const toggleSwitch = document.getElementById("toggleSwitch");
+
+      toggleContainer.addEventListener("click", () => {
+        toggleContainer.classList.toggle("active");
+        toggleSwitch.classList.toggle("active");
+      });
+
+      function changeProfilePicture(event) {
+        const file = event.target.files[0];
+        const reader = new FileReader();
+
+        reader.onload = function () {
+          const profileImage = document.querySelector(".profile-image");
+          profileImage.src = reader.result;
+        };
+
+        if (file) {
+          reader.readAsDataURL(file);
+        }
+      }
+    </script>
+  </body>
+</html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sales Insights</title>
+    <link rel="stylesheet" href="../static/dashboard.css" />
+    <link rel="stylesheet" href="../static/styles.css" />
+    <script src="../static/script.js"></script>
+  </head>
+  <body>
+    <header>
+      <h1>SALES INSIGHT</h1>
+      <h3 id="welcomeMessage"></h3>
+      <span>
+        <h4>Voice Command</h4>
+        <div class="toggle-container" id="toggleContainer">
+          <div class="toggle-switch" id="toggleSwitch"></div>
+        </div>
+      </span>
+      <span>
+        <a href="/logout_page">Log out</a>
+        <div class="profile-container">
+          <img
+            class="profile-image"
+            src="{{ url_for('static', filename='profile_pictures/' + profile_picture) }}"
+            alt="Profile Picture"
+          />
+          <form
+            class="profile-form"
+            action="/upload_profile"
+            method="post"
+            enctype="multipart/form-data"
+          >
+            <input
+              class="profile-input"
+              type="file"
+              accept="image/*"
+              name="profile_picture"
+              id="profileInput"
+            />
+            <button type="submit">Upload Profile Picture</button>
+          </form>
+        </div>
+      </span>
+    </header>
+    <div class="sidebar">
+      <a href="/dashboard_page">Dashboard</a>
+      <a href="/upload_page">Upload File</a>
+      <a href="/feedback_page">Feedback</a>
+      <a href="/voice_command">Voice Command</a>
+      <a href="/history_page">History</a>
+      <a href="#" style="background-color: #ffb000">Setting</a>
+      <a href="/logout_page">Log out</a>
+    </div>
+    <div class="content a">
+      <div class="content_2">
+        <div class="chart">
+          <h1>Settings</h1>
+
+          <div class="setting">
+            <label for="profilePic">Change Profile Picture:</label>
+            <input type="file" id="profilePic" />
+          </div>
+
+          <div class="setting">
+            <label for="username">Update Username:</label>
+            <input type="text" id="username" />
+          </div>
+
+          <div class="setting">
+            <label for="notifications">Enable Notifications:</label>
+            <input type="checkbox" id="notifications" />
+          </div>
+
+          <button id="saveSettings">Save Settings</button>
+          <div class="setting">
+            <label for="password">Change Password:</label>
+            <input type="password" id="password" />
+          </div>
+          <div class="setting">
+            <label for="language">Select Language:</label>
+            <select id="language">
+              <option value="en">English</option>
+              <option value="es">Spanish</option>
+              <option value="fr">French</option>
+            </select>
+          </div>
+          <div class="setting">
+            <label for="darkMode">Enable Dark Mode:</label>
+            <input type="checkbox" id="darkMode" />
+          </div>
+
+          <div class="setting">
+            <label for="notificationSound">Choose Notification Sound:</label>
+            <input type="file" id="notificationSound" accept=".mp3, .wav" />
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sales Insights - Sign Up</title>
+    <link rel="stylesheet" href="../static/styles.css" />
+  </head>
+  <body>
+    <div class="signup-container">
+      <h1>Sign Up</h1>
+      <form action="/signup" method="POST">
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username" required /><br /><br />
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required /><br /><br />
+        <label for="password">Password:</label>
+        <input
+          type="password"
+          id="password"
+          name="password"
+          required
+        /><br /><br />
+        <input type="submit" id="signup-btn" value="Sign Up" />
+      </form>
+      <p>Already have an account? <a class=".aa" href="/">Login here</a></p>
+    </div>
+    <script src="https://www.gstatic.com/firebasejs/8.1.1/firebase-app.js"></script>
+    <!-- Below is the additional script for Firebase Auth -->
+    <script src="https://www.gstatic.com/firebasejs/8.1.1/firebase-auth.js"></script>
+
+    <script>
+      var firebaseConfig = {
+        apiKey: "AIzaSyCMV1BfAWKCjwIGMbnZ0mvM_9EY3-Et8tI",
+        authDomain: "Sales-Insights.irebaseapp.com",
+        databaseURL: "https://Sales-Insights.firebaseio.com",
+        projectId: "sales-insights-14809",
+      };
+      firebase.initializeApp(firebaseConfig);
+
+      const auth = firebase.auth();
+      const signupBtn = document.querySelector("#signup-btn");
+      signupBtn.addEventListener("click", (e) => {
+        e.preventDefault();
+
+        const email = document.querySelector("#email").value;
+        const password = document.querySelector("#password").value;
+
+        auth
+          .createUserWithEmailAndPassword(email, password)
+          .then((cred) => {
+            alert("User signed up!");
+            window.location.href = '/';
+          })
+          .catch((error) => {
+            alert(error.message);
+          });
+      });
+    </script>
+  </body>
+</html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sales Insights - Upload</title>
+    <link rel="stylesheet" href="../static/dashboard.css" />
+    <link rel="stylesheet" href="../static/styles.css" />
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <script src="../static/script.js"></script>
+  </head>
+  <body>
+    <header>
+      <h1>SALES INSIGHT</h1>
+      <h3 id="welcomeMessage"></h3>
+      <span>
+        <h4>Voice Command</h4>
+        <div class="toggle-container voiceCommandButton" id="toggleContainer">
+          <div class="toggle-switch" id="toggleSwitch"></div>
+        </div>
+      </span>           
+      <span>
+        <a href="/logout_page">Log out</a>
+        <div class="profile-container">
+          <img
+            class="profile-image"
+            src="{{ url_for('static', filename='profile_pictures/' + profile_picture) }}"
+            alt="Profile Picture"
+          />
+          <form
+            class="profile-form"
+            action="/upload_profile"
+            method="post"
+            enctype="multipart/form-data"
+          >
+            <input
+              class="profile-input"
+              type="file"
+              accept="image/*"
+              name="profile_picture"
+              id="profileInput"
+            />
+            <button type="submit">Upload Profile Picture</button>
+          </form>
+        </div>
+      </span>
+    </header>
+    <div class="sidebar">
+      <a href="/dashboard_page">Dashboard</a>
+      <a href="/upload_page" style="background-color: #ffb000;">Upload File</a>
+      <a href="/feedback_page">Feedback</a>
+      <a href="/voice_command">Voice Command</a>
+      <a href="/history_page">History</a>
+      <a href="/setting_page">Setting</a>
+      <a href="/logout_page" >Log out</a>
+    </div>
+    <div class="content">
+      <div class="upload-container">
+        <h1>Upload Excel File</h1>
+        <form action="/upload" method="post" enctype="multipart/form-data">
+          <input type="file" name="file" accept=".xlsx, .xls" />
+          <input type="submit" value="Upload" />
+        </form>
+      </div>
+    </div>
+  </body>
+</html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="../static/dashboard.css" />
+    <link rel="stylesheet" href="../static/styles.css" />
+    <script src="../static/script.js"></script>
+    <title>Voice Command</title>
+  </head>
+  <body>
+    <header>
+      <h1>SALES INSIGHT</h1>
+      <h3 id="welcomeMessage"></h3>
+      <span>
+        <h4>Voice Command</h4>
+        <div class="toggle-container voiceCommandButton" id="toggleContainer">
+          <div class="toggle-switch" id="toggleSwitch"></div>
+        </div>
+      </span>      
+      <span>
+        <a href="/logout_page">Log out</a>
+        <div class="profile-container">
+          <img
+            class="profile-image"
+            src="{{ url_for('static', filename='profile_pictures/' + profile_picture) }}"
+            alt="Profile Picture"
+          />
+          <form
+            class="profile-form"
+            action="/upload_profile"
+            method="post"
+            enctype="multipart/form-data"
+          >
+            <input
+              class="profile-input"
+              type="file"
+              accept="image/*"
+              name="profile_picture"
+              id="profileInput"
+            />
+            <button type="submit">Upload Profile Picture</button>
+          </form>
+        </div>
+      </span>
+    </header>
+    <div class="sidebar">
+      <a href="/dashboard_page">Dashboard</a>
+      <a href="/upload_page">Upload File</a>
+      <a href="/feedback_page">Feedback</a>
+      <a href="/voice_command" style="background-color: #ffb000;">Voice Command</a>
+      <a href="/history_page">History</a>
+      <a href="/setting_page">Setting</a>
+      <a href="/logout_page">Log out</a>
+    </div>
+    <div class="content">
+      <div class="voice-container">
+        <button id="voiceCommandButton" onclick="toggleVoiceCommand()">
+          Enable Voice Command
+        </button>
+
+        <p>
+          Click the "Enable Voice Command" button to start using voice commands.
+        </p>
+      </div>
+    </div>
+
+    <script>
+      let recognition;
+      let speakingEnabled = false;
+
+      function toggleVoiceCommand() {
+        if (!recognition) {
+          recognition = new webkitSpeechRecognition() || SpeechRecognition();
+          recognition.continuous = true;
+          recognition.interimResults = true;
+          recognition.onresult = handleSpeechResult;
+          recognition.start();
+
+          document.getElementById("voiceCommandButton").textContent =
+            "Disable Voice Command";
+          speakingEnabled = true;
+
+          // Add event listeners for various events
+          document.addEventListener("click", handleVoiceCommand);
+          document.addEventListener("keydown", handleVoiceCommand);
+          document.addEventListener("change", handleVoiceCommand);
+          document.addEventListener("submit", handleVoiceCommand);
+          document.addEventListener("mouseover", handleVoiceCommand);
+          document.addEventListener("select", handleVoiceCommand);
+
+          // Add window focus/blur event listeners
+          window.addEventListener("focus", handleWindowFocus);
+          window.addEventListener("blur", handleWindowBlur);
+        } else {
+          recognition.stop();
+          recognition = null;
+
+          document.getElementById("voiceCommandButton").textContent =
+            "Enable Voice Command";
+          speakingEnabled = false;
+
+          // Remove event listeners
+          document.removeEventListener("click", handleVoiceCommand);
+          document.removeEventListener("keydown", handleVoiceCommand);
+          document.removeEventListener("change", handleVoiceCommand);
+          document.removeEventListener("submit", handleVoiceCommand);
+          document.removeEventListener("mouseover", handleVoiceCommand);
+          document.removeEventListener("select", handleVoiceCommand);
+
+          // Remove window focus/blur event listeners
+          window.removeEventListener("focus", handleWindowFocus);
+          window.removeEventListener("blur", handleWindowBlur);
+        }
+      }
+
+      function handleSpeechResult(event) {
+        const interimTranscript =
+          event.results[event.results.length - 1][0].transcript;
+        console.log("Interim Result:", interimTranscript);
+        if (speakingEnabled) {
+          speak(interimTranscript);
+        }
+      }
+
+      function handleVoiceCommand(event) {
+        let utteranceText = "Unknown content";
+
+        if (event.type === "click") {
+          if (event.target.tagName === "BUTTON") {
+            utteranceText = "Button clicked: " + event.target.innerText;
+          }
+        } else if (event.type === "change") {
+          if (event.target.tagName === "INPUT") {
+            utteranceText = "Input changed: " + event.target.value;
+          }
+        } else if (event.type === "mouseover") {
+          utteranceText = "Hovering over: " + event.target.innerText;
+        } else if (event.type === "select") {
+          utteranceText = "Selected text: " + window.getSelection().toString();
+        } else if (event.type === "keydown") {
+          utteranceText = "Key pressed: " + event.key;
+        }
+
+        if (speakingEnabled) {
+          speak(utteranceText);
+        }
+      }
+
+      function handleWindowFocus() {
+        if (speakingEnabled) {
+          speak(
+            "Window focused. Current content: " +
+              document.activeElement.innerText
+          );
+        }
+      }
+
+      function handleWindowBlur() {
+        if (speakingEnabled) {
+          speak("Window blurred.");
+        }
+      }
+
+      function speak(text) {
+        const speechSynthesis = window.speechSynthesis;
+        const utterance = new SpeechSynthesisUtterance(text);
+        speechSynthesis.speak(utterance);
+      }
+    </script>
+  </body>
+</html>
